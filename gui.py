@@ -1,11 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: iso-8859-1 -*-
 # file controlling the graphic interface of the software
 import tkinter as tk
 import tkinter.messagebox as messagebox
 import tkinter.scrolledtext as tkst
 import sqlite3 as lite
-from subprocess import Popen, CREATE_NEW_CONSOLE
+from subprocess import Popen
 import formula as formule
 import shutil
 import httplib2
@@ -391,7 +391,7 @@ class Formula:
 
 def main(): 
     root = tk.Tk()    
-    root.iconbitmap(default='transparent.ico')
+    #root.iconbitmap(default='transparent.ico')
     app = General(root)
     root.title("ZERO MAGIC (v0.3)")
     root.mainloop()
