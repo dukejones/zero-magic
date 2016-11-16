@@ -9,13 +9,14 @@ from subprocess import Popen
 import formula as formule
 import shutil
 import httplib2
+
 class General:
     def __init__(self, master):
         # main window of the graphic interface
         self.master = master
         self.master.geometry("{}x{}".format(550,650))
         # content of the main window
-        self.welcome = tk.Label(self.master, text = 'Welcome to Zero Magic!\nFollow these 5 steps to enjoy the magic of short selling*\n\nPLEASE NOTE THAT THIS SOFTWARE IS STILL IN EARLY TESTING')        
+        self.welcome = tk.Label(self.master, text = 'Welcome to Zero Magic!\nFollow these 5 steps to enjoy the magic of short selling*\n\nPLEASE NOTE THAT THIS SOFTWARE IS STILL IN EARLY TESTING')
         self.ins = tk.Button(self.master, text = '1. Manage Data', width = 250, command = self.add_button)
         self.insl = tk.Label(self.master, wraplength=250, padx=0, justify = "left", text = "1. To increase the accuracy of its trading advice, Zero Magic requires that you input certain data. Under 'Manage Data' you can provide links to known stock promoters and short-sellers. You can also provide the names of stocks that were previously successful shorts.", width=250)        
         self.form = tk.Button(self.master, text = '2. Modify Formula', width = 250, command = self.formula_button)
@@ -46,21 +47,27 @@ class General:
         self.discl.grid(row=7,column=0, padx=0,columnspan=2)
         self.master.grid_columnconfigure(index=1, weight=1)
         self.master.grid_columnconfigure(index=0, weight=1)
+
     def display_button(self):
         self.newWindow = tk.Toplevel(self.master)
         self.app = Display(self.newWindow)
+
     def perform_button(self):
         self.newWindow = tk.Toplevel(self.master)
         self.app = Perform(self.newWindow)
+
     def reset_button(self):
         self.newWindow = tk.Toplevel(self.master)
         self.app = Reset(self.newWindow)
+
     def add_button(self):
         self.newWindow = tk.Toplevel(self.master)
         self.app = Add(self.newWindow)
+
     def formula_button(self):
         self.newWindow = tk.Toplevel(self.master)
         self.app = Formula(self.newWindow)
+
     def update_button(self):
         self.newWindow = tk.Toplevel(self.master)
         self.app = Update(self.newWindow)
@@ -94,6 +101,7 @@ class Display:
         self.quitButton = tk.Button(self.frame, text = 'Quit', width = 25, command = self.close_windows)
         self.quitButton.pack()
         self.frame.pack()
+
     def close_windows(self):
         self.master.destroy()
 
@@ -181,6 +189,7 @@ class Perform:
         self.quitButton = tk.Button(self.frame, text = 'Quit', width = 25, command = self.close_windows)
         self.quitButton.pack()
         self.frame.pack()
+
     def close_windows(self):
         self.master.destroy()
         
@@ -250,6 +259,7 @@ class Add:
         self.targeted.grid(row=2,column=1)
         self.master.grid_columnconfigure(index=1, weight=1)
         self.master.grid_columnconfigure(index=0, weight=1)
+
     def add_shortseller(self):
         # if the user wants to add a short-seller: input
         self.newWindow = tk.Toplevel(self.master)
@@ -270,6 +280,7 @@ class Add:
         self.listbox1.grid(column=2,row=0)
         self.newLabel.grid(column=0,row=0)
         self.newLabel2.grid(column=0,row=1)
+
     def add_promoter(self):
         # input for promoters
         self.newWindow = tk.Toplevel(self.master)
@@ -290,6 +301,7 @@ class Add:
         self.listbox1.grid(column=2,row=0)
         self.newLabel.grid(column=0,row=0)
         self.newLabel2.grid(column=0,row=1)
+
     def add_targeted(self):
         # input for targeted companies
         self.newWindow = tk.Toplevel(self.master)
@@ -301,6 +313,7 @@ class Add:
         self.validateButton.grid(column=0,row=1)
         self.newLabel.grid(column=0,row=0)
         self.entry.grid(column=1,row=0)
+
     def TargetedClick(self):
         # insert into the DB a previously targeted company (controls the existence of the company)
         con = lite.connect('stock.db')
@@ -316,6 +329,7 @@ class Add:
         con.commit()
         con.close()
         self.newWindow.destroy()
+
     def PromoterClick(self):
         # insert into the DB a promoters' DB to be updated then with articles.exe program
         # (controls the existence of the webpage)
@@ -334,6 +348,7 @@ class Add:
                 self.newWindow.destroy()
             else:
                 messagebox.showerror("URL Error","Zero Magic could not retrieve the URL. Please type a real author URL (e.g. http://seekingalpha.com/author/author-id/articles) or check your connection.")
+
     def ShortClick(self):
         #same as PromotersClick
         page = httplib2.Http()
@@ -351,6 +366,7 @@ class Add:
                 self.newWindow.destroy()
             else:
                 messagebox.showerror("URL Error","Zero Magic could not retrieve the URL. Please type a real author URL (e.g. http://seekingalpha.com/author/author-id/articles) or check your connection.")
+
 class Formula:
     def __init__(self, master):
         # display and modifies the formula
@@ -378,6 +394,7 @@ class Formula:
         self.validateButton.grid(row=a+1, column=0)
         con.commit()
         con.close()
+
     def OnButtonClick(self):
         con = lite.connect('stock.db')
         cur=con.cursor()
@@ -398,3 +415,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
