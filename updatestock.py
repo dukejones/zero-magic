@@ -32,7 +32,7 @@ def GetStock(symbol):
         print('Stock '+symbol+' unfonctional.')
     else:
         price = page.xpath('//*[@class="time_rtq_ticker"]//text()')[0]
-        tmp=[data[0],data[29],price,data[34],data[45], formula.NumberTreatment(data[29]),formula.NumberTreatment(data[0]),symbol]   
+        tmp = [data[0],data[29],price,data[34],data[45], formula.NumberTreatment(data[29]),formula.NumberTreatment(data[0]),symbol]
         con = lite.connect('stock.db')
         cur=con.cursor()     
         cur.execute('UPDATE Stocks_Data SET MarketCap=?, OCF=?, DayMA=?, FiftyWeekHigh=?, ShortRatio=?, OCFN=?, MarketCapN=? WHERE Symbol=?', tmp)

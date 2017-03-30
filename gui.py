@@ -31,7 +31,7 @@ class General:
         self.resetl = tk.Label(self.master, wraplength=260, justify = "left", text = '[X] Something went wrong? The ranking update does not work? Reset the database.', width=250)        
         self.welcome.grid(row=0,column=0,columnspan=2, pady=20)
         self.discl = tk.Label(self.master, wraplength=500, justify = "center", font="Arial 8", text='\n*Individuals must not rely on the information provided by Zero Magic software to make a financial or investment decision. Before making any decision, we recommend you consult a financial planner to take into account your particular investment objectives, financial situation and individual needs.',width=500)
-        # grids and table of the main window        
+        # grids and table of the main window
         self.ins.grid(row=1,column=1)
         self.insl.grid(row=1,column=0, padx=0)
         self.form.grid(row=2,column=1)
@@ -82,7 +82,7 @@ class Display:
         self.txt.pack(expand=True, fill='both')
         # select the 5 first results ordered by overall score
         con = lite.connect('stock.db')
-        cur=con.cursor()        
+        cur=con.cursor()
         cur.execute('SELECT Symbol,Score FROM Stocks_Data WHERE Proximity!=0 AND Score IS NOT NULL ORDER BY Score DESC LIMIT 0, 5')
         best=cur.fetchall()
         cur.execute('SELECT Name,Coefficient FROM Formula')
@@ -115,7 +115,7 @@ class Perform:
         self.txt.pack(expand=True, fill='both')
         # select all relevant information regarding the best short
         con = lite.connect('stock.db')
-        cur=con.cursor()        
+        cur=con.cursor()
         cur.execute('SELECT Symbol,Score,MarketCap,OCF,ShortRatio,Proximity,ShortPublic,PromotersPublic,FiftyWeekHigh,DayMA FROM Stocks_Data WHERE Proximity!=0 AND Score IS NOT NULL ORDER BY Score DESC LIMIT 0, 1')
         best=cur.fetchall()
         con.close()
@@ -142,19 +142,19 @@ class Perform:
             content+="\n--> oops, the company generates cash; let's find other weaknesses."
         #content+="- Short-ratio: "+str(best[4])+"\n"
         # condition on distance to 1yr high
-        content+="\n\n- Distance to 1-Year High: "+str(round(distance,1))+"% below"       
+        content+="\n\n- Distance to 1-Year High: "+str(round(distance,1))+"% below"
         if distance<25:
             content+="\n--> perfect: we're near to a 1-Year-High, we will argue that the stock is the object of a dangerous bubble."
         else:
-            content+="\n--> well, the stock has already fallen this year"           
+            content+="\n--> well, the stock has already fallen this year"
         content+="\n\n2. Secondly, let’s see if the company is involved in networks of corruption.\n"
         # condition on the network indicator        
         if best[5]<10:
             content+="\n-> It has "+str(best[5])+" degree(s) of separation from previously successful short targets.\n"
             content+="\n-> Have a closer look to the links between "+best[0]+"'s board and the following boards:\n"
-            # display the companies linked to the best short            
+            # display the companies linked to the best short
             con = lite.connect('stock.db')
-            cur=con.cursor()        
+            cur=con.cursor()
             cur.execute('SELECT Linked FROM Board_Network WHERE Symbol=?',[best[0]])
             board=cur.fetchall()
             con.close()
@@ -168,11 +168,11 @@ class Perform:
         #content+="See URLs:\n"
         #content+=+"\n"
         content+="\n\n4. Now look at how the stock price is currently being discussed. "
-        content+="There are/is "+str(best[6])+" short article(s) related to "+best[0]+":\n\n"   
-        # description of short arguments        
+        content+="There are/is "+str(best[6])+" short article(s) related to "+best[0]+":\n\n"
+        # description of short arguments
         if best[6]>0:
             con = lite.connect('stock.db')
-            cur=con.cursor()        
+            cur=con.cursor()
             cur.execute('SELECT Title,Url FROM Articles WHERE Stocks=?',[best[0]])
             articles=cur.fetchall()
             con.close()
@@ -184,7 +184,7 @@ class Perform:
         content+="\n  - Bleecker Street Research,"
         content+="\n  - Logical Thought."
         content+="\n\nPlease add whatever further writers, journalists or analysts you think could be relevant.\n\nSit back and enjoy the magic."
-        # insert everything in the scrolledtext frame        
+        # insert everything in the scrolledtext frame
         self.txt.insert(tk.INSERT,content)
         self.quitButton = tk.Button(self.frame, text = 'Quit', width = 25, command = self.close_windows)
         self.quitButton.pack()
