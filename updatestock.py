@@ -10,6 +10,7 @@ import sqlite3 as lite
 import csv
 from lxml import html
 import formula as formule
+
 # updates the financial values of stocks in the DB with latest Yahoo Finance data
 def ListStocks():
     stocks=csv.reader(open("stocklist.csv","r"), delimiter=";")
@@ -18,7 +19,9 @@ def ListStocks():
         stocklist.extend([row[0]])
     print('Stock list retrieved.')
     return stocklist
+
 #print(ListStocks())
+
 def GetStock(symbol):
     formula=formule.Formula()
     header={'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:32.0) Gecko/20100101 Firefox/32.0',}
@@ -41,7 +44,10 @@ def GetStock(symbol):
         con.commit()
         con.close()
         print('Stock '+symbol+' updated.')
+
 liste=ListStocks()
 for symbol in liste:
     GetStock(symbol)
+
 print('Update finished.\nYou can quit this process.')
+
